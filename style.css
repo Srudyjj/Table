@@ -2,8 +2,12 @@ html {
     font-family: sans-serif;
   }
 
+  body {
+    margin: 0;
+  }
+
   .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
   }
   
@@ -19,11 +23,12 @@ html {
   td, th {
     border: 1px solid rgb(190,190,190);
     padding: 10px 20px;
+    box-sizing: border-box;
   }
   
   th {
     background-color: rgb(235,235,235);
-    box-sizing: border-box;
+    position: relative;
   }
   
   td {
@@ -38,3 +43,30 @@ html {
     background-color: rgb(245,245,245);
   }
 
+  .table_wrapper {
+    position: relative;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .table_float_header {
+    position: absolute;
+
+  }
+
+  .scrolled_table {
+    
+  }
+
+  .separator {
+    position: absolute;
+    width: 4px;
+    top: 0;
+    right: -1px;
+    cursor: col-resize;
+    user-select: none;
+  }
+
+  .separator:hover {
+    border-right: 2px solid green;
+  }
