@@ -20,28 +20,30 @@ class Table {
         return table
     }
     
-    _createTHeader(scheme) {
+    _createTHeader(schema) {
         const thead = document.createElement("thead");
         const tr = document.createElement("tr");
-        scheme.forEach(text => {
+        schema.forEach(col => {
             const th = document.createElement("th");
-            th.innerText = text;
+            th.innerText = col.headerName;
+            th.width = col.width;
             tr.appendChild(th);        
         });
         thead.appendChild(tr);
         return thead;
     }
     
-    _createTBody(scheme, data) {
+    _createTBody(schema, data) {
         const tbody = document.createElement("tbody");
         data.forEach(row => {
             const tr = document.createElement("tr");
-            for (const key of scheme.keys()) {
+            schema.forEach(col => {
                 const td = document.createElement("td");
-                const tdValue = row[key];
+                const colName = col.dataName;
+                const tdValue = row[colName];
                 td.innerHTML = tdValue;
                 tr.appendChild(td);
-            }
+            });
             tbody.appendChild(tr);
         });
         return tbody

@@ -12,6 +12,8 @@ html {
     border: 2px solid rgb(200,200,200);
     letter-spacing: 1px;
     font-size: 0.8rem;
+    table-layout: fixed;
+    width: 100%;
   }
   
   td, th {
@@ -21,6 +23,7 @@ html {
   
   th {
     background-color: rgb(235,235,235);
+    box-sizing: border-box;
   }
   
   td {
@@ -34,7 +37,4 @@ html {
   tr:nth-child(odd) td {
     background-color: rgb(245,245,245);
   }
-  
-  caption {
-    padding: 10px;
-  }
+
