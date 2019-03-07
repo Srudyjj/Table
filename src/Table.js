@@ -9,6 +9,8 @@ class Table {
         this._createTableWrapper = this._createTableWrapper.bind(this);
         this._createFloatTHeader =  this._createFloatTHeader.bind(this);
         this._onTableScroll = this._onTableScroll.bind(this);
+        this._connectHeaders = this._connectHeaders.bind(this);
+
     }
 
     static createTable(schema, data) {
@@ -20,8 +22,8 @@ class Table {
         // Creating table header
         this.tHead = this._createTHeader(this.schema);
         
-        // Creating floating table header (need table header)
-        this.floatTHead = this._createFloatTHeader(this.tHead);
+        // Creating floating table header
+        this.floatTHead = this._createFloatTHeader(this.schema);
         
         // Creating table body
         this.tBody = this._createTBody(this.schema, this.data)
@@ -59,27 +61,36 @@ class Table {
         const thead = document.createElement("thead");
         const tr = document.createElement("tr");
         schema.forEach(col => {
-            const separator = this._createTableSeparator(100);
             const th = document.createElement("th");
             th.innerText = col.headerName;
             th.style.width = col.width;
-            th.appendChild(separator);
-            tr.appendChild(th);        
+            tr.appendChild(th);         
         });
         thead.appendChild(tr);
 
         return thead;
     }
 
-    _createFloatTHeader(thead) {
+    _createFloatTHeader(schema) {
         const table = document.createElement('table');
-        const floatTHead = thead.cloneNode(true);
         table.classList.add("table_float_header");
-        table.appendChild(floatTHead);
+        const thead = document.createElement("thead");
+        const tr = document.createElement("tr");
+        schema.forEach(col => {
+            const separator = this._createTableSeparator();
+            const th = document.createElement("th");
+            th.innerText = col.headerName;
+            th.style.width = col.width;
+            th.appendChild(separator);
+            tr.appendChild(th);        
+        });
+
+        thead.appendChild(tr);
+        table.appendChild(thead);
 
         return table
     }
-    
+   
     _createTBody(schema, data) {
         const tbody = document.createElement("tbody");
         data.forEach(row => {
@@ -103,10 +114,13 @@ class Table {
         this.floatTHead.style.top = top + "px";
     }
 
-    _createTableSeparator(height){
+    _createTableSeparator(){
         const div = document.createElement('div');
         div.classList.add("separator");
-        div.style.height = height + 'px';
+
+        setTimeout(() => {
+            div.style.height = this.tableWrapper.clientHeight + 'px';
+        }, 0);
 
         let targetCol, nextColumn, pageX, targetColWidth, nextColumnWidth;
 
@@ -128,6 +142,8 @@ class Table {
                 };
 
                 targetCol.style.width = (targetColWidth + diff) + 'px';
+
+                this._connectHeaders(this.tHead, this.floatTHead);
             }
         });
 
@@ -141,6 +157,14 @@ class Table {
         });
 
         return div;
+    }
+
+    _connectHeaders(mainHeader, floatHeader) {
+        const mainHeaderTh = mainHeader.children[0].cells;
+        const floatHeaderTh = floatHeader.children[0].children[0].cells;
+        for (let i = 0; i < mainHeaderTh.length; i++) {
+            mainHeaderTh[i].style.width = floatHeaderTh[i].style.width;
+        }      
     }
 }
 

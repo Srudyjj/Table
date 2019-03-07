@@ -51,6 +51,7 @@ html {
 
   .table_float_header {
     position: absolute;
+    z-index: 100;
 
   }
 
